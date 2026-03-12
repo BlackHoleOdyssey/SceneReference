@@ -300,6 +300,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac3569c9e71f314b8fe88a78ef429f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneReferenceSample
+  sceneReference:
+    guid: fce81f356623f8d429c69a6b154a317f
+    sceneAsset: {fileID: 102900000, guid: fce81f356623f8d429c69a6b154a317f, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
