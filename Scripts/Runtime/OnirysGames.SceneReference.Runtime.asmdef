@@ -1,0 +1,14 @@
+{
+    "name": "OnirysGames.SceneReference.Runtime",
+    "rootNamespace": "OnirysGames.SceneReference",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
