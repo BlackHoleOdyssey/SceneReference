@@ -1,7 +1,9 @@
 {
     "name": "OnirysGames.SceneReference.Editor",
     "rootNamespace": "OnirysGames.SceneReference.Editor",
-    "references": [],
+    "references": [
+        "GUID:524476553db71d24281f3cce9c3de004"
+    ],
     "includePlatforms": [
         "Editor"
     ],
