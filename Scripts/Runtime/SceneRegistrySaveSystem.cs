@@ -9,13 +9,12 @@ namespace OnirysGames.SceneReference
     public static class SceneRegistrySaveSystem
     {
         private static readonly string FilePath = Path.Combine(Application.streamingAssetsPath, "SceneRegistry.json");
-        private const string Password = "OnirysGames_SceneRegistry";
 
         public static void Load(out Dictionary<string, int> scenes)
         {
             scenes = new();
             if (!File.Exists(FilePath)) return;
-            
+
             string cipher = File.ReadAllText(FilePath);
             string json = Decrypt(cipher);
             SceneRegistryData data = JsonUtility.FromJson<SceneRegistryData>(json);
@@ -25,7 +24,7 @@ namespace OnirysGames.SceneReference
         private static string Decrypt(string cipherBytes)
         {
             byte[] fullBytes = Convert.FromBase64String(cipherBytes);
-            
+
             using Aes aes = Aes.Create();
             aes.Key = DeriveKey();
 
@@ -34,16 +33,27 @@ namespace OnirysGames.SceneReference
             aes.IV = iv;
 
             using MemoryStream memoryStream = new(fullBytes, 16, fullBytes.Length - 16);
-            using CryptoStream  cryptoStream = new(memoryStream, aes.CreateDecryptor(), CryptoStreamMode.Read);
+            using CryptoStream cryptoStream = new(memoryStream, aes.CreateDecryptor(), CryptoStreamMode.Read);
             using StreamReader streamReader = new(cryptoStream);
-            
+
             return streamReader.ReadToEnd();
         }
-        
+
         private static byte[] DeriveKey()
         {
+            SceneRegistryConfig config = SceneRegistryConfig.Instance;
+            string keyToUse = "";
+
+            if (config != null)
+            {
+                if (config.KeyProvider == KeyProviderType.Custom)
+                {
+                    keyToUse = SceneRegistryConfig.Instance.CustomKey;
+                }
+            }
+            
             using SHA256 sha256 = SHA256.Create();
-            return sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes("YourSecretKeyHere"));
+            return sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(keyToUse));
         }
 
 #if UNITY_EDITOR
@@ -53,7 +63,7 @@ namespace OnirysGames.SceneReference
                 Directory.CreateDirectory(Application.streamingAssetsPath);
 
             string json = JsonUtility.ToJson(SceneRegistryData.FromDictionary(scenes), true);
-            string  cipher = Encrypt(json);
+            string cipher = Encrypt(json);
             File.WriteAllText(FilePath, cipher);
 
             UnityEditor.AssetDatabase.Refresh();
@@ -67,12 +77,17 @@ namespace OnirysGames.SceneReference
 
             using MemoryStream memoryStream = new();
 
-            memoryStream.Write(aes.IV, 0, aes.IV.Length);
+            memoryStream.Write(aes.IV, 0, 16);
+
 
             using (CryptoStream cryptoStream = new(memoryStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
-            using (StreamWriter streamWriter = new(cryptoStream))
-                streamWriter.Write(plainText);
-            
+            {
+                using (StreamWriter streamWriter = new(cryptoStream))
+                {
+                    streamWriter.Write(plainText);
+                }
+            }
+
             return Convert.ToBase64String(memoryStream.ToArray());
         }
 #endif
@@ -88,7 +103,10 @@ namespace OnirysGames.SceneReference
         {
             Dictionary<string, int> dict = new();
             for (int i = 0; i < guids.Count; i++)
+            {
                 dict[guids[i]] = buildIndexes[i];
+            }
+
             return dict;
         }
 
