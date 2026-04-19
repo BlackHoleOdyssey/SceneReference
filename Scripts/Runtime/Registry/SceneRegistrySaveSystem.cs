@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace BHO.SceneReference
 {
@@ -17,11 +16,8 @@ namespace BHO.SceneReference
         {
             SceneRegistryConfig config = SceneRegistryConfig.Instance;
             if (config == null)
-            {
-                Debug.LogWarning("SceneRegistryConfig not found, falling back to GeneratedCode.");
                 return new GeneratedCodeStorage();
-            }
-    
+
             return config.StorageMode switch
             {
                 StorageMode.StreamingAssets => new StreamingAssetsStorage(),

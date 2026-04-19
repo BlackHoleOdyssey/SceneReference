@@ -28,6 +28,14 @@ namespace BHO.SceneReference.Editor
                     
                     EditorGUI.BeginChangeCheck();
                     EditorGUILayout.PropertyField(storageModeProperty, new GUIContent("Storage Mode"));
+                    
+                    GUIStyle helpBoxStyle = new GUIStyle(EditorStyles.helpBox)
+                    {
+                        fontSize = 12,
+                        wordWrap = true,
+                        padding = new RectOffset(8, 8, 8, 8)
+                    };
+                    
                     if (EditorGUI.EndChangeCheck())
                     {
                         serializedConfig.ApplyModifiedProperties();
@@ -74,7 +82,11 @@ namespace BHO.SceneReference.Editor
                             AssetDatabase.Refresh();
                         }
 
-                        EditorGUILayout.HelpBox("The encryption key will be stored in a ScriptableObject and accessible in the build.", MessageType.Warning);
+                        GUILayout.Label("StreamingAssets saves the registry in an encrypted JSON file accessible in the build files. This mode is intended for projects that need to update the registry without recompiling. In return, the encryption key is stored in a ScriptableObject that can be extracted from the build, making it less secure.", helpBoxStyle);
+                    }
+                    else
+                    {
+                        GUILayout.Label("Auto-Generated generates a C# file compiled directly into your build. This is the recommended mode: no external files, no encryption key, and the data is as protected as the rest of your code. It is possible to use this mode for DLC, but it also requires a game update since the auto-generated file will be recompiled with the new entries.", helpBoxStyle);
                     }
                 },
                 keywords = new[] { "Scene", "Registry", "Storage"
