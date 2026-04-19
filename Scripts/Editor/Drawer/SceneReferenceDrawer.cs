@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,11 +21,31 @@ namespace OnirysGames.SceneReference.Editor
 
             string currentPath = AssetDatabase.GUIDToAssetPath(guidProperty.stringValue);
             SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(currentPath);
+            
+            float buttonWidth = 100;
+            Rect addSceneButton = new Rect(position.x + position.width - buttonWidth, position.y, buttonWidth, LINE_HEIGHT);
 
-            Rect objectField = new Rect(position.x, position.y, position.width, LINE_HEIGHT);
-
+            float objectWidth = position.width - buttonWidth - SPACING;
+            Rect objectField = new Rect(position.x, position.y, objectWidth, LINE_HEIGHT);
+            
             EditorGUI.BeginChangeCheck();
             SceneAsset newAsset = EditorGUI.ObjectField(objectField, label, sceneAsset, typeof(SceneAsset), false) as SceneAsset;
+            
+            if(GUI.Button(addSceneButton, "Add to scenes"))
+            {
+                if (sceneAsset != null)
+                {
+                    string scenePath = AssetDatabase.GetAssetPath(sceneAsset);
+                    if (IsSceneInBuildSettings(scenePath))
+                    {
+                        Debug.LogWarning($"Scene '{sceneAsset.name}' is already in Build Settings.");
+                        return;
+                    }
+                    
+                    AddSceneToBuildSettings(scenePath);
+                    Debug.Log($"Scene '{sceneAsset.name}' added to Build Settings.");
+                }
+            }
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -75,6 +96,25 @@ namespace OnirysGames.SceneReference.Editor
             }
         }
 
+        private void AddSceneToBuildSettings(string scenePath)
+        {
+            EditorBuildSettingsScene[] existingScenes = EditorBuildSettings.scenes;
+            EditorBuildSettingsScene newScene = new EditorBuildSettingsScene(scenePath, true);
+            EditorBuildSettings.scenes = existingScenes.Concat(new[] { newScene }).ToArray();
+        }
+
+        private bool IsSceneInBuildSettings(string scenePath)
+        {            
+            foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
+            {
+                if (scene.path == scenePath)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             SerializedProperty guidProperty = property.FindPropertyRelative("guid");
@@ -86,9 +126,10 @@ namespace OnirysGames.SceneReference.Editor
             }
 
             float height = LINE_HEIGHT * 2 + SPACING;
+            
             if (foldout)
             {
-                height += (LINE_HEIGHT + SPACING) * 3; // 3 lines of info
+                height += (LINE_HEIGHT + SPACING) * 3;
             }
 
             return height;

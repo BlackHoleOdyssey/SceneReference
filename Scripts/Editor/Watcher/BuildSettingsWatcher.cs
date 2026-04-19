@@ -1,5 +1,4 @@
 using UnityEditor;
-using UnityEngine;
 
 namespace OnirysGames.SceneReference.Editor
 {
@@ -21,16 +20,10 @@ namespace OnirysGames.SceneReference.Editor
             {
                 if (scene.enabled)
                 {
-                    Debug.Log($"Adding scene {scene.guid.ToString()} to registry: " + scene.path);
                     SceneRegistry.Add(scene.guid.ToString(), buildIndex);
                 }
                 
                 buildIndex++;
-            }
-            
-            foreach (var keyValuePair in SceneRegistry.Scenes)
-            {
-                Debug.Log($"GUID: {keyValuePair.Key}, Build Index: {keyValuePair.Value}");
             }
             
             SceneRegistrySaveSystem.Save(SceneRegistry.Scenes);
