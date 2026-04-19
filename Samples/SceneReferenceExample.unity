@@ -829,11 +829,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneReferenceSample
   sceneReferenceExample:
-    guid: c0468d7b66680f043bb1760caf56f16e
-    sceneAsset: {fileID: 102900000, guid: c0468d7b66680f043bb1760caf56f16e, type: 3}
-  sceneReferenceExample2:
     guid: 33799e23c259c9c4aa980cd2bbca6da4
     sceneAsset: {fileID: 102900000, guid: 33799e23c259c9c4aa980cd2bbca6da4, type: 3}
+  sceneReferenceExample2:
+    guid: c0468d7b66680f043bb1760caf56f16e
+    sceneAsset: {fileID: 102900000, guid: c0468d7b66680f043bb1760caf56f16e, type: 3}
 --- !u!1 &1111289182
 GameObject:
   m_ObjectHideFlags: 0
