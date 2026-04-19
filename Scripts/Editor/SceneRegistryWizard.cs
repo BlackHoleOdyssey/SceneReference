@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace BHO.SceneReference.Editor
@@ -63,8 +64,20 @@ namespace BHO.SceneReference.Editor
                 Close();
             }
 
-            if (GUILayout.Button("Close"))
+            if (GUILayout.Button("Open sample scene"))
+            {
+                string[] guids = AssetDatabase.FindAssets("SceneReferenceExample t:Scene");
+                if (guids.Length > 0)
+                {
+                    string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+                    if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                    {
+                        EditorSceneManager.OpenScene(path);
+                    }
+                }
+                
                 Close();
+            }
         }
     }
 }

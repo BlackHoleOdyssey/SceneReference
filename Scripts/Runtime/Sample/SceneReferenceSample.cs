@@ -8,11 +8,17 @@ namespace BHO.SceneReference.Sample
 {
     public class SceneReferenceSample : MonoBehaviour
     {
-        [SerializeField] private SceneReference sceneReference;
+        [SerializeField] private SceneReference sceneReferenceExample;
+        [SerializeField] private SceneReference sceneReferenceExample2;
 
-        private void Awake()
+        public void LoadFirstScene()
         {
-            SceneManager.LoadScene(sceneReference);
+            SceneManager.LoadScene(sceneReferenceExample);
+        }
+
+        public void LoadSecondScene()
+        {
+            SceneManager.LoadScene(sceneReferenceExample2);
         }
     }
 }
