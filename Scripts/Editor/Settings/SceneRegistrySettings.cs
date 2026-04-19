@@ -18,7 +18,11 @@ namespace BHO.SceneReference.Editor
                 guiHandler = _ =>
                 {
                     SceneRegistryConfig config = SceneRegistryConfig.Instance;
-                    if (config == null) return;
+                    if (config == null)
+                    {
+                        EditorGUILayout.HelpBox("No SceneRegistryConfig found. Please create one via Create > BHO > Scene Registry Config.", MessageType.Warning);
+                        return;
+                    }
 
                     SerializedObject serializedConfig = new SerializedObject(config);
                     serializedConfig.Update();
