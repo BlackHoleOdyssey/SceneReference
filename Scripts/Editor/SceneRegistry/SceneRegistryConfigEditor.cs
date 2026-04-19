@@ -17,10 +17,12 @@ namespace BHO.SceneReference.Editor
 
         public override void OnInspectorGUI()
         {
-            SceneRegistryConfig config = (SceneRegistryConfig)target;
+            serializedObject.Update();
             
             keyProvider.enumValueIndex = EditorGUILayout.Popup("Key Provider", keyProvider.enumValueIndex, keyProvider.enumDisplayNames);
-            customKeyProvider.stringValue = EditorGUILayout.TextField("Custom Key", config.CustomKey);
+            customKeyProvider.stringValue = EditorGUILayout.TextField("Custom Key", customKeyProvider.stringValue);
+            
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

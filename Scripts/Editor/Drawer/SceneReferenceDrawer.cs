@@ -21,17 +21,18 @@ namespace BHO.SceneReference.Editor
 
             string currentPath = AssetDatabase.GUIDToAssetPath(guidProperty.stringValue);
             SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(currentPath);
-            
-            float buttonWidth = 100;
-            Rect addSceneButton = new Rect(position.x + position.width - buttonWidth, position.y, buttonWidth, LINE_HEIGHT);
 
-            float objectWidth = position.width - buttonWidth - SPACING;
-            Rect objectField = new Rect(position.x, position.y, objectWidth, LINE_HEIGHT);
+            float buttonWidth = 100;
+            float y = position.y;
             
+            Rect objectField = new Rect(position.x, y, position.width - buttonWidth - SPACING, LINE_HEIGHT);
+            Rect addSceneButton = new Rect(position.x + position.width - buttonWidth, y, buttonWidth, LINE_HEIGHT);
+            y += LINE_HEIGHT + SPACING;
+
             EditorGUI.BeginChangeCheck();
             SceneAsset newAsset = EditorGUI.ObjectField(objectField, label, sceneAsset, typeof(SceneAsset), false) as SceneAsset;
-            
-            if(GUI.Button(addSceneButton, "Add to scenes"))
+
+            if (GUI.Button(addSceneButton, "Add to scenes"))
             {
                 if (sceneAsset != null)
                 {
@@ -41,9 +42,41 @@ namespace BHO.SceneReference.Editor
                         Debug.LogWarning($"Scene '{sceneAsset.name}' is already in Build Settings.");
                         return;
                     }
-                    
+
                     AddSceneToBuildSettings(scenePath);
                     Debug.Log($"Scene '{sceneAsset.name}' added to Build Settings.");
+                }
+            }
+
+            if (sceneAsset != null && !IsSceneInBuildSettings(AssetDatabase.GetAssetPath(sceneAsset)))
+            {
+                EditorGUI.HelpBox(new Rect(position.x, y, position.width, LINE_HEIGHT), "Scene is not in Build Settings!", MessageType.Warning);
+                y += LINE_HEIGHT + SPACING;
+            }
+
+            if (!string.IsNullOrEmpty(guidProperty.stringValue))
+            {
+                string scenePath = AssetDatabase.GUIDToAssetPath(guidProperty.stringValue);
+
+                foldout = EditorGUI.Foldout(new Rect(position.x, y, position.width, LINE_HEIGHT), foldout, "Scene Info", true);
+                y += LINE_HEIGHT + SPACING;
+
+                if (foldout)
+                {
+                    GUI.enabled = false;
+                    EditorGUI.indentLevel++;
+
+                    int buildIndex = SceneUtility.GetBuildIndexByScenePath(scenePath);
+                    string buildIndexLabel = buildIndex != -1 ? buildIndex.ToString() : "Not in Build Settings";
+
+                    EditorGUI.LabelField(new Rect(position.x, y, position.width, LINE_HEIGHT), "Guid", guidProperty.stringValue);
+                    y += LINE_HEIGHT + SPACING;
+                    EditorGUI.LabelField(new Rect(position.x, y, position.width, LINE_HEIGHT), "Scene Path", scenePath);
+                    y += LINE_HEIGHT + SPACING;
+                    EditorGUI.LabelField(new Rect(position.x, y, position.width, LINE_HEIGHT), "Build Index", buildIndexLabel);
+
+                    EditorGUI.indentLevel--;
+                    GUI.enabled = true;
                 }
             }
 
@@ -62,38 +95,7 @@ namespace BHO.SceneReference.Editor
                 }
             }
 
-            if (!string.IsNullOrEmpty(guidProperty.stringValue))
-            {
-                string scenePath = AssetDatabase.GUIDToAssetPath(guidProperty.stringValue);
-                GUI.enabled = false;
-
-                Rect foldoutRect = new Rect(position.x, position.y + LINE_HEIGHT + SPACING, position.width, LINE_HEIGHT);
-                foldout = EditorGUI.Foldout(foldoutRect, foldout, "Scene Info", true);
-
-                if (foldout)
-                {
-                    EditorGUI.indentLevel++;
-
-                    float y = position.y + (LINE_HEIGHT + SPACING) * 2;
-
-                    int buildIndex = SceneUtility.GetBuildIndexByScenePath(scenePath);
-                    string buildIndexLabel = buildIndex != -1
-                        ? buildIndex.ToString()
-                        : "Not in Build Settings";
-                    
-                    EditorGUI.LabelField(new Rect(position.x, y, position.width, LINE_HEIGHT), "Guid", guidProperty.stringValue);
-                    y += LINE_HEIGHT + SPACING;
-
-                    EditorGUI.LabelField(new Rect(position.x, y, position.width, LINE_HEIGHT), "Scene Path", scenePath);
-                    y += LINE_HEIGHT + SPACING;
-
-                    EditorGUI.LabelField(new Rect(position.x, y, position.width, LINE_HEIGHT), "Build Index", buildIndexLabel);
-
-                    EditorGUI.indentLevel--;
-                }
-
-                GUI.enabled = true;
-            }
+            EditorGUI.EndProperty();
         }
 
         private void AddSceneToBuildSettings(string scenePath)
@@ -104,7 +106,7 @@ namespace BHO.SceneReference.Editor
         }
 
         private bool IsSceneInBuildSettings(string scenePath)
-        {            
+        {
             foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
             {
                 if (scene.path == scenePath)
@@ -112,21 +114,31 @@ namespace BHO.SceneReference.Editor
                     return true;
                 }
             }
+
             return false;
         }
-        
+
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             SerializedProperty guidProperty = property.FindPropertyRelative("guid");
             bool hasAsset = !string.IsNullOrEmpty(guidProperty.stringValue);
 
+            float height = LINE_HEIGHT + SPACING;
+
             if (!hasAsset)
             {
-                return LINE_HEIGHT;
+                return height;
             }
 
-            float height = LINE_HEIGHT * 2 + SPACING;
-            
+            string scenePath = AssetDatabase.GUIDToAssetPath(guidProperty.stringValue);
+
+            if (!IsSceneInBuildSettings(scenePath))
+            {
+                height += LINE_HEIGHT + SPACING;
+            } 
+
+            height += LINE_HEIGHT + SPACING;
+
             if (foldout)
             {
                 height += (LINE_HEIGHT + SPACING) * 3;
