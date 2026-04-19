@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Black Hole Odyssey
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -57,19 +60,16 @@ namespace BHO.SceneReference.Editor
 
                         if (GUILayout.Button("Apply Key"))
                         {
-                            // 1. Supprimer l'ancien JSON chiffré avec l'ancienne clé
                             string jsonPath = Path.Combine(Application.streamingAssetsPath, "SceneRegistry.json");
                             if (File.Exists(jsonPath))
                             {
                                 File.Delete(jsonPath);
                                 File.Delete(jsonPath + ".meta");
                             }
-
-                            // 2. Reset pour forcer la recréation avec la nouvelle clé
+                            
                             SceneRegistrySaveSystem.ResetStorage();
                             SceneRegistry.Reload();
-
-                            // 3. Sauvegarder avec la nouvelle clé
+                            
                             SceneRegistrySaveSystem.Save(SceneRegistry.Scenes);
                             AssetDatabase.Refresh();
                         }

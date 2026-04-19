@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Black Hole Odyssey
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -32,6 +35,9 @@ namespace BHO.SceneReference
             }
             
             StringBuilder stringBuilder = new();
+            
+            stringBuilder.AppendLine("// Copyright (c) 2026 Black Hole Odyssey");
+            stringBuilder.AppendLine("// Licensed under the MIT License. See LICENSE file in the project root for full license information.");
             stringBuilder.AppendLine("// Auto-generated — do not edit manually");
             stringBuilder.AppendLine("using System.Collections.Generic;");
             stringBuilder.AppendLine("namespace BHO.SceneReference {");
