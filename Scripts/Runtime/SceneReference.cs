@@ -2,7 +2,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace OnirysGames.SceneReference
+namespace BHO.SceneReference
 {
     [Serializable]
     public class SceneReference

@@ -1,8 +1,9 @@
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace OnirysGames.SceneReference.Editor
+namespace BHO.SceneReference.Editor
 {
     [CustomPropertyDrawer(typeof(SceneReference), true)]
     public class SceneReferenceDrawer : PropertyDrawer
@@ -21,10 +22,63 @@ namespace OnirysGames.SceneReference.Editor
             string currentPath = AssetDatabase.GUIDToAssetPath(guidProperty.stringValue);
             SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(currentPath);
 
-            Rect objectField = new Rect(position.x, position.y, position.width, LINE_HEIGHT);
+            float buttonWidth = 100;
+            float y = position.y;
+            
+            Rect objectField = new Rect(position.x, y, position.width - buttonWidth - SPACING, LINE_HEIGHT);
+            Rect addSceneButton = new Rect(position.x + position.width - buttonWidth, y, buttonWidth, LINE_HEIGHT);
+            y += LINE_HEIGHT + SPACING;
 
             EditorGUI.BeginChangeCheck();
             SceneAsset newAsset = EditorGUI.ObjectField(objectField, label, sceneAsset, typeof(SceneAsset), false) as SceneAsset;
+
+            if (GUI.Button(addSceneButton, "Add to scenes"))
+            {
+                if (sceneAsset != null)
+                {
+                    string scenePath = AssetDatabase.GetAssetPath(sceneAsset);
+                    if (IsSceneInBuildSettings(scenePath))
+                    {
+                        Debug.LogWarning($"Scene '{sceneAsset.name}' is already in Build Settings.");
+                        return;
+                    }
+
+                    AddSceneToBuildSettings(scenePath);
+                    Debug.Log($"Scene '{sceneAsset.name}' added to Build Settings.");
+                }
+            }
+
+            if (sceneAsset != null && !IsSceneInBuildSettings(AssetDatabase.GetAssetPath(sceneAsset)))
+            {
+                EditorGUI.HelpBox(new Rect(position.x, y, position.width, LINE_HEIGHT), "Scene is not in Build Settings!", MessageType.Warning);
+                y += LINE_HEIGHT + SPACING;
+            }
+
+            if (!string.IsNullOrEmpty(guidProperty.stringValue))
+            {
+                string scenePath = AssetDatabase.GUIDToAssetPath(guidProperty.stringValue);
+
+                foldout = EditorGUI.Foldout(new Rect(position.x, y, position.width, LINE_HEIGHT), foldout, "Scene Info", true);
+                y += LINE_HEIGHT + SPACING;
+
+                if (foldout)
+                {
+                    GUI.enabled = false;
+                    EditorGUI.indentLevel++;
+
+                    int buildIndex = SceneUtility.GetBuildIndexByScenePath(scenePath);
+                    string buildIndexLabel = buildIndex != -1 ? buildIndex.ToString() : "Not in Build Settings";
+
+                    EditorGUI.LabelField(new Rect(position.x, y, position.width, LINE_HEIGHT), "Guid", guidProperty.stringValue);
+                    y += LINE_HEIGHT + SPACING;
+                    EditorGUI.LabelField(new Rect(position.x, y, position.width, LINE_HEIGHT), "Scene Path", scenePath);
+                    y += LINE_HEIGHT + SPACING;
+                    EditorGUI.LabelField(new Rect(position.x, y, position.width, LINE_HEIGHT), "Build Index", buildIndexLabel);
+
+                    EditorGUI.indentLevel--;
+                    GUI.enabled = true;
+                }
+            }
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -41,38 +95,27 @@ namespace OnirysGames.SceneReference.Editor
                 }
             }
 
-            if (!string.IsNullOrEmpty(guidProperty.stringValue))
+            EditorGUI.EndProperty();
+        }
+
+        private void AddSceneToBuildSettings(string scenePath)
+        {
+            EditorBuildSettingsScene[] existingScenes = EditorBuildSettings.scenes;
+            EditorBuildSettingsScene newScene = new EditorBuildSettingsScene(scenePath, true);
+            EditorBuildSettings.scenes = existingScenes.Concat(new[] { newScene }).ToArray();
+        }
+
+        private bool IsSceneInBuildSettings(string scenePath)
+        {
+            foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
             {
-                string scenePath = AssetDatabase.GUIDToAssetPath(guidProperty.stringValue);
-                GUI.enabled = false;
-
-                Rect foldoutRect = new Rect(position.x, position.y + LINE_HEIGHT + SPACING, position.width, LINE_HEIGHT);
-                foldout = EditorGUI.Foldout(foldoutRect, foldout, "Scene Info", true);
-
-                if (foldout)
+                if (scene.path == scenePath)
                 {
-                    EditorGUI.indentLevel++;
-
-                    float y = position.y + (LINE_HEIGHT + SPACING) * 2;
-
-                    int buildIndex = SceneUtility.GetBuildIndexByScenePath(scenePath);
-                    string buildIndexLabel = buildIndex != -1
-                        ? buildIndex.ToString()
-                        : "Not in Build Settings";
-                    
-                    EditorGUI.LabelField(new Rect(position.x, y, position.width, LINE_HEIGHT), "Guid", guidProperty.stringValue);
-                    y += LINE_HEIGHT + SPACING;
-
-                    EditorGUI.LabelField(new Rect(position.x, y, position.width, LINE_HEIGHT), "Scene Path", scenePath);
-                    y += LINE_HEIGHT + SPACING;
-
-                    EditorGUI.LabelField(new Rect(position.x, y, position.width, LINE_HEIGHT), "Build Index", buildIndexLabel);
-
-                    EditorGUI.indentLevel--;
+                    return true;
                 }
-
-                GUI.enabled = true;
             }
+
+            return false;
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -80,15 +123,25 @@ namespace OnirysGames.SceneReference.Editor
             SerializedProperty guidProperty = property.FindPropertyRelative("guid");
             bool hasAsset = !string.IsNullOrEmpty(guidProperty.stringValue);
 
+            float height = LINE_HEIGHT + SPACING;
+
             if (!hasAsset)
             {
-                return LINE_HEIGHT;
+                return height;
             }
 
-            float height = LINE_HEIGHT * 2 + SPACING;
+            string scenePath = AssetDatabase.GUIDToAssetPath(guidProperty.stringValue);
+
+            if (!IsSceneInBuildSettings(scenePath))
+            {
+                height += LINE_HEIGHT + SPACING;
+            } 
+
+            height += LINE_HEIGHT + SPACING;
+
             if (foldout)
             {
-                height += (LINE_HEIGHT + SPACING) * 3; // 3 lines of info
+                height += (LINE_HEIGHT + SPACING) * 3;
             }
 
             return height;

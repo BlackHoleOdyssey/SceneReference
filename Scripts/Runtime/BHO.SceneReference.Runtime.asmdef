@@ -1,6 +1,6 @@
 {
-    "name": "OnirysGames.SceneReference.Runtime",
-    "rootNamespace": "OnirysGames.SceneReference",
+    "name": "BHO.SceneReference.Runtime",
+    "rootNamespace": "BHO.SceneReference",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

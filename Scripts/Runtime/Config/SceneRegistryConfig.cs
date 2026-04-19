@@ -1,23 +1,20 @@
 using UnityEngine;
 
-namespace OnirysGames.SceneReference
+namespace BHO.SceneReference
 {
     public enum KeyProviderType
     {
-        Custom,
-        ServerUrl
+        Custom
     }
     
-    [CreateAssetMenu(fileName = "SceneRegistryConfig", menuName = "OnirysGames/SceneRegistryConfig")]
+    [CreateAssetMenu(fileName = "SceneRegistryConfig", menuName = "BHO/SceneRegistryConfig")]
     public class SceneRegistryConfig : ScriptableObject
     {
         [SerializeField] private KeyProviderType keyProvider;
         [SerializeField] private string customKey = "";
-        [SerializeField] private string serverUrl = "";
         
         public KeyProviderType KeyProvider => keyProvider;
         public string CustomKey => customKey;
-        public string ServerUrl => serverUrl;
 
         public static SceneRegistryConfig Instance { get; private set; }
 

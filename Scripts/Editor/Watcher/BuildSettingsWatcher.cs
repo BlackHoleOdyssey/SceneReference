@@ -1,7 +1,6 @@
 using UnityEditor;
-using UnityEngine;
 
-namespace OnirysGames.SceneReference.Editor
+namespace BHO.SceneReference.Editor
 {
     [InitializeOnLoad]
     public static class BuildSettingsWatcher
@@ -9,6 +8,7 @@ namespace OnirysGames.SceneReference.Editor
         static BuildSettingsWatcher()
         {
             EditorBuildSettings.sceneListChanged += OnSceneListChanged;
+            EditorApplication.quitting += () => SceneRegistrySaveSystem.Save(SceneRegistry.Scenes);
         }
 
         private static void OnSceneListChanged()
@@ -21,16 +21,9 @@ namespace OnirysGames.SceneReference.Editor
             {
                 if (scene.enabled)
                 {
-                    Debug.Log($"Adding scene {scene.guid.ToString()} to registry: " + scene.path);
                     SceneRegistry.Add(scene.guid.ToString(), buildIndex);
+                    buildIndex++;
                 }
-                
-                buildIndex++;
-            }
-            
-            foreach (var keyValuePair in SceneRegistry.Scenes)
-            {
-                Debug.Log($"GUID: {keyValuePair.Key}, Build Index: {keyValuePair.Value}");
             }
             
             SceneRegistrySaveSystem.Save(SceneRegistry.Scenes);

@@ -1,6 +1,6 @@
 {
-    "name": "OnirysGames.SceneReference.Editor",
-    "rootNamespace": "OnirysGames.SceneReference.Editor",
+    "name": "BHO.SceneReference.Editor",
+    "rootNamespace": "BHO.SceneReference.Editor",
     "references": [
         "GUID:524476553db71d24281f3cce9c3de004"
     ],
