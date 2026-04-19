@@ -1,13 +1,15 @@
-using OnirysGames.SceneReference;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneReferenceSample : MonoBehaviour
+namespace BHO.SceneReference.Sample
 {
-    [SerializeField] private SceneReference sceneReference;
-
-    private void Awake()
+    public class SceneReferenceSample : MonoBehaviour
     {
-        SceneManager.LoadScene(sceneReference);
+        [SerializeField] private SceneReference sceneReference;
+
+        private void Awake()
+        {
+            SceneManager.LoadScene(sceneReference);
+        }
     }
 }

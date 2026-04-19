@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace OnirysGames.SceneReference
+namespace BHO.SceneReference
 {
     public static class SceneRegistry
     {

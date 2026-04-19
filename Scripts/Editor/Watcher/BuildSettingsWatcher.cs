@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace OnirysGames.SceneReference.Editor
+namespace BHO.SceneReference.Editor
 {
     [InitializeOnLoad]
     public static class BuildSettingsWatcher

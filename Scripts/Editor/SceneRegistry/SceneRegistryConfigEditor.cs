@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace OnirysGames.SceneReference.Editor
+namespace BHO.SceneReference.Editor
 {
     [CustomEditor(typeof(SceneRegistryConfig))]
     public class SceneRegistryConfigEditor : UnityEditor.Editor
@@ -13,7 +13,6 @@ namespace OnirysGames.SceneReference.Editor
         {
             keyProvider = serializedObject.FindProperty("keyProvider");
             customKeyProvider = serializedObject.FindProperty("customKey");
-            customServerUrl = serializedObject.FindProperty("serverUrl");
         }
 
         public override void OnInspectorGUI()
@@ -21,15 +20,7 @@ namespace OnirysGames.SceneReference.Editor
             SceneRegistryConfig config = (SceneRegistryConfig)target;
             
             keyProvider.enumValueIndex = EditorGUILayout.Popup("Key Provider", keyProvider.enumValueIndex, keyProvider.enumDisplayNames);
-
-            if (keyProvider.enumValueIndex == (int)KeyProviderType.Custom)
-            {
-                customKeyProvider.stringValue = EditorGUILayout.TextField("Custom Key", config.CustomKey);
-            }
-            else if (keyProvider.enumValueIndex == (int)KeyProviderType.ServerUrl)
-            {
-                customServerUrl.stringValue = EditorGUILayout.TextField("Server URL", config.ServerUrl);
-            }
+            customKeyProvider.stringValue = EditorGUILayout.TextField("Custom Key", config.CustomKey);
         }
     }
 }

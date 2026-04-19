@@ -4,7 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using UnityEngine;
 
-namespace OnirysGames.SceneReference
+namespace BHO.SceneReference
 {
     public static class SceneRegistrySaveSystem
     {

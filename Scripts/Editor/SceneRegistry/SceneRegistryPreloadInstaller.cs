@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace OnirysGames.SceneReference.Editor
+namespace BHO.SceneReference.Editor
 {
     public class SceneRegistryPreloadInstaller : AssetPostprocessor
     {

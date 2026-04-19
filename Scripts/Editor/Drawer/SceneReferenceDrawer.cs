@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace OnirysGames.SceneReference.Editor
+namespace BHO.SceneReference.Editor
 {
     [CustomPropertyDrawer(typeof(SceneReference), true)]
     public class SceneReferenceDrawer : PropertyDrawer
