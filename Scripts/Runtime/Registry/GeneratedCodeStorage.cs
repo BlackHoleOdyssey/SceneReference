@@ -54,7 +54,7 @@ namespace BHO.SceneReference
             stringBuilder.AppendLine("}");
 
             File.WriteAllText(OUTPUT_PATH, stringBuilder.ToString());
-            UnityEditor.AssetDatabase.Refresh();
+            AssetDatabase.Refresh();
         }
 #endif
 

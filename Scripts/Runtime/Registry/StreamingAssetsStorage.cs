@@ -15,10 +15,14 @@ namespace BHO.SceneReference
 
         public void Load(out Dictionary<string, int> scenes)
         {
-            scenes = new();
-            if (!File.Exists(FilePath)) return;
-
-            string cipher = File.ReadAllText(FilePath);
+            scenes = new Dictionary<string, int>(); 
+            
+            if (!File.Exists(FilePath)) 
+                return;
+    
+            string cipher = File.ReadAllText(FilePath); if (string.IsNullOrEmpty(cipher)) 
+                return; 
+    
             string json = Decrypt(cipher);
             SceneRegistryData data = JsonUtility.FromJson<SceneRegistryData>(json);
             scenes = data.ToDictionary();

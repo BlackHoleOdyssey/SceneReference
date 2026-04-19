@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: BHO.SceneReference.Runtime::BHO.SceneReference.SceneRegistryConfig
   keyProvider: 0
   customKey: motdepasse
-  StorageMode: 1
+  StorageMode: 0
