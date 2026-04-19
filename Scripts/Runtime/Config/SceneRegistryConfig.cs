@@ -6,32 +6,60 @@ namespace BHO.SceneReference
     {
         Custom
     }
-    
+
     [CreateAssetMenu(fileName = "SceneRegistryConfig", menuName = "BHO/SceneRegistryConfig")]
     public class SceneRegistryConfig : ScriptableObject
     {
-        [SerializeField] private KeyProviderType keyProvider;
-        [SerializeField] private string customKey = "";
-        
+        [SerializeField, HideInInspector] private KeyProviderType keyProvider;
+        [SerializeField, HideInInspector] private string customKey = "";
+        [HideInInspector] public StorageMode StorageMode;
+
         public KeyProviderType KeyProvider => keyProvider;
         public string CustomKey => customKey;
 
-        public static SceneRegistryConfig Instance { get; private set; }
+        public static SceneRegistryConfig Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = Load();
+                return instance;
+            }
+            private set => instance = value;
+        }
+
+        private static SceneRegistryConfig instance;
+
+        private static SceneRegistryConfig Load()
+        {
+#if UNITY_EDITOR
+            string[] guids = UnityEditor.AssetDatabase.FindAssets("t:SceneRegistryConfig");
+            if (guids.Length > 0)
+            {
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
+                return UnityEditor.AssetDatabase.LoadAssetAtPath<SceneRegistryConfig>(path);
+            }
+
+            return null;
+#else
+        SceneRegistryConfig[] configs = Resources.FindObjectsOfTypeAll<SceneRegistryConfig>();
+        return configs.Length > 0 ? configs[0] : null;
+#endif
+        }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void LoadConfig()
         {
-            if (Instance == null)
+            Instance = Load();
+
+            if (Instance != null)
             {
-                SceneRegistryConfig[] configs = Resources.FindObjectsOfTypeAll<SceneRegistryConfig>();
-        
-                if (configs.Length > 0)
-                {
-                    Instance = configs[0];
-                }
+                Debug.Log($"[SceneRegistry] Loaded {Instance.name}.");
             }
-            
-            Debug.Log($"[SceneRegistry] Loaded {Instance.name}.");
+            else
+            {
+                Debug.LogWarning("[SceneRegistry] No SceneRegistryConfig found.");
+            }
         }
     }
 }

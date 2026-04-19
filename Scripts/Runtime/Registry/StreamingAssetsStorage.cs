@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace BHO.SceneReference
 {
-    public static class SceneRegistrySaveSystem
+    public class StreamingAssetsStorage : ISceneRegistryStorage
     {
-        private static readonly string FilePath = Path.Combine(Application.streamingAssetsPath, "SceneRegistry.json");
+        private readonly string FilePath = Path.Combine(Application.streamingAssetsPath, "SceneRegistry.json");
 
-        public static void Load(out Dictionary<string, int> scenes)
+        public void Load(out Dictionary<string, int> scenes)
         {
             scenes = new();
             if (!File.Exists(FilePath)) return;
@@ -21,7 +21,7 @@ namespace BHO.SceneReference
             scenes = data.ToDictionary();
         }
 
-        private static string Decrypt(string cipherBytes)
+        private string Decrypt(string cipherBytes)
         {
             byte[] fullBytes = Convert.FromBase64String(cipherBytes);
 
@@ -39,7 +39,7 @@ namespace BHO.SceneReference
             return streamReader.ReadToEnd();
         }
 
-        private static byte[] DeriveKey()
+        private byte[] DeriveKey()
         {
             SceneRegistryConfig config = SceneRegistryConfig.Instance;
             string keyToUse = "";
@@ -51,13 +51,13 @@ namespace BHO.SceneReference
                     keyToUse = SceneRegistryConfig.Instance.CustomKey;
                 }
             }
-            
+
             using SHA256 sha256 = SHA256.Create();
             return sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(keyToUse));
         }
 
 #if UNITY_EDITOR
-        public static void Save(Dictionary<string, int> scenes)
+        public void Save(Dictionary<string, int> scenes)
         {
             if (!Directory.Exists(Application.streamingAssetsPath))
                 Directory.CreateDirectory(Application.streamingAssetsPath);
@@ -69,7 +69,7 @@ namespace BHO.SceneReference
             UnityEditor.AssetDatabase.Refresh();
         }
 
-        private static string Encrypt(string plainText)
+        private string Encrypt(string plainText)
         {
             using Aes aes = Aes.Create();
             aes.Key = DeriveKey();
@@ -91,35 +91,5 @@ namespace BHO.SceneReference
             return Convert.ToBase64String(memoryStream.ToArray());
         }
 #endif
-    }
-
-    [Serializable]
-    internal class SceneRegistryData
-    {
-        public List<string> guids = new();
-        public List<int> buildIndexes = new();
-
-        public Dictionary<string, int> ToDictionary()
-        {
-            Dictionary<string, int> dict = new();
-            for (int i = 0; i < guids.Count; i++)
-            {
-                dict[guids[i]] = buildIndexes[i];
-            }
-
-            return dict;
-        }
-
-        public static SceneRegistryData FromDictionary(Dictionary<string, int> dict)
-        {
-            SceneRegistryData data = new();
-            foreach (var kvp in dict)
-            {
-                data.guids.Add(kvp.Key);
-                data.buildIndexes.Add(kvp.Value);
-            }
-
-            return data;
-        }
     }
 }
