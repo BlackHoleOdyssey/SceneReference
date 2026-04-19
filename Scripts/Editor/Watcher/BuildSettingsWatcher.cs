@@ -33,7 +33,7 @@ namespace OnirysGames.SceneReference.Editor
                 Debug.Log($"GUID: {keyValuePair.Key}, Build Index: {keyValuePair.Value}");
             }
             
-            SceneRegistry.Save();
+            SceneRegistrySaveSystem.Save(SceneRegistry.Scenes);
         }
     }
 }
