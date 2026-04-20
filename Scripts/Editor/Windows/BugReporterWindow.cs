@@ -15,6 +15,9 @@ namespace BHO.SceneReference.Editor
             FeatureRequest
         }
 
+        private const string REPO_OWNER = "Black-Hole-Odyssey";
+        private const string REPO_NAME = "SceneReference";
+
         private string reportTitle = "";
         private string reportBody = "";
         private Labels label = Labels.Bug;
@@ -63,31 +66,39 @@ namespace BHO.SceneReference.Editor
                 reportMessage = "";
                 _ = SendReport();
             }
-            
+
             GUILayout.Space(20);
-            
+
             GUIStyle messageStyle = new GUIStyle(EditorStyles.helpBox)
             {
                 normal = { textColor = reportMessage.Contains("successfully") ? Color.limeGreen : Color.softRed },
                 wordWrap = true,
                 fontSize = 12
             };
-            
+
             EditorGUILayout.LabelField(reportMessage, messageStyle);
         }
 
         private async Task SendReport()
         {
-            if(string.IsNullOrWhiteSpace(reportTitle) || string.IsNullOrWhiteSpace(reportBody))
+            if (string.IsNullOrWhiteSpace(reportTitle) || string.IsNullOrWhiteSpace(reportBody))
             {
                 reportMessage = "Please fill in both the title and description before sending the report.";
                 return;
             }
-            
+
             reportButtonLabel = "Sending...";
 
             Debug.Log(label.ToString());
-            ReportData data = new ReportData { title = reportTitle, description = reportBody, label = label.ToString() };
+            ReportData data = new ReportData
+            {
+                title = reportTitle,
+                description = reportBody,
+                label = label.ToString(),
+                repoOwner = REPO_OWNER,
+                repoName = REPO_NAME
+            };
+            
             string json = JsonUtility.ToJson(data);
             byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
 
@@ -125,5 +136,7 @@ namespace BHO.SceneReference.Editor
         public string title;
         public string description;
         public string label;
+        public string repoOwner;
+        public string repoName;
     }
 }
