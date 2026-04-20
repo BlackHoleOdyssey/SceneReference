@@ -86,7 +86,8 @@ namespace BHO.SceneReference.Editor
             
             reportButtonLabel = "Sending...";
 
-            ReportData data = new ReportData { title = reportTitle, description = reportBody };
+            Debug.Log(label.ToString());
+            ReportData data = new ReportData { title = reportTitle, description = reportBody, label = label.ToString() };
             string json = JsonUtility.ToJson(data);
             byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
 
@@ -114,9 +115,6 @@ namespace BHO.SceneReference.Editor
                 }
 
                 reportButtonLabel = "Send Report";
-                
-                await Task.Delay(2000);
-                Close();
             }
         }
     }
@@ -126,5 +124,6 @@ namespace BHO.SceneReference.Editor
     {
         public string title;
         public string description;
+        public string label;
     }
 }
