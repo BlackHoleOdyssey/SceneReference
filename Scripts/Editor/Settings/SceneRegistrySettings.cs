@@ -12,7 +12,7 @@ namespace BHO.SceneReference.Editor
         [SettingsProvider]
         public static SettingsProvider SceneRegistrySettingsProvider()
         {
-            return new SettingsProvider("Project/Black Hole Odyssey/Scene Registry", SettingsScope.Project)
+            return new SettingsProvider("Project/Black Hole Odyssey/Scene Reference", SettingsScope.Project)
             {
                 label = "Scene Registry",
                 guiHandler = _ =>

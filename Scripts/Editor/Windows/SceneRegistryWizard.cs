@@ -30,12 +30,12 @@ namespace BHO.SceneReference.Editor
 
     public class SceneRegistryWizardWindow : EditorWindow
     {
-        [MenuItem("BHO/Scene Registry")]
+        [MenuItem("BHO/Scene Reference")]
         public static void Open()
         {
             SceneRegistryWizardWindow window = GetWindow<SceneRegistryWizardWindow>("Scene Registry Setup");
-            window.minSize = new Vector2(500, 175);
-            window.maxSize = new Vector2(500.01f, 175.01f);
+            window.minSize = new Vector2(500, 215);
+            window.maxSize = new Vector2(500.01f, 215.01f);
             window.ShowUtility();
         }
 
@@ -59,8 +59,7 @@ namespace BHO.SceneReference.Editor
                     Selection.activeObject = config;
                 }
             }
-
-
+            
             if (GUILayout.Button("Open Project Settings"))
             {
                 SettingsService.OpenProjectSettings("Project/Black Hole Odyssey/Scene Registry");
@@ -79,6 +78,14 @@ namespace BHO.SceneReference.Editor
                     }
                 }
                 
+                Close();
+            }
+            
+            GUILayout.Space(20);
+            
+            if (GUILayout.Button("Send Report"))
+            {
+                BugReporterWindow.ShowWindow();
                 Close();
             }
         }
