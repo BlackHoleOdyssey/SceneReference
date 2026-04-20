@@ -88,8 +88,7 @@ namespace BHO.SceneReference.Editor
             }
 
             reportButtonLabel = "Sending...";
-
-            Debug.Log(label.ToString());
+            
             ReportData data = new ReportData
             {
                 title = reportTitle,
