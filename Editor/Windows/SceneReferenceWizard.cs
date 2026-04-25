@@ -8,11 +8,11 @@ using UnityEngine;
 namespace BHO.SceneReference.Editor
 {
     [InitializeOnLoad]
-    public static class SceneRegistryWizard
+    public static class SceneReferenceWizard
     {
-        private const string WIZARD_SHOWN_KEY = "BHO.SceneRegistry.WizardShown";
+        private const string WIZARD_SHOWN_KEY = "BHO.SceneReference.WizardShown";
         
-        static SceneRegistryWizard()
+        static SceneReferenceWizard()
         {
             if (!EditorPrefs.GetBool(WIZARD_SHOWN_KEY, false))
             {
@@ -33,17 +33,20 @@ namespace BHO.SceneReference.Editor
         [MenuItem("BHO/Scene Reference")]
         public static void Open()
         {
-            SceneRegistryWizardWindow window = GetWindow<SceneRegistryWizardWindow>("Scene Registry Setup");
-            window.minSize = new Vector2(500, 215);
-            window.maxSize = new Vector2(500.01f, 215.01f);
+            SceneRegistryWizardWindow window = GetWindow<SceneRegistryWizardWindow>("Scene Reference Setup");
+            window.minSize = new Vector2(500, 265);
+            window.maxSize = new Vector2(500.01f, 265.01f);
             window.ShowUtility();
         }
 
         private void OnGUI()
         {
-            GUILayout.Label("Welcome to Scene Registry!", EditorStyles.boldLabel);
+            Rect rect = GUILayoutUtility.GetRect(0, 50, GUILayout.ExpandWidth(true));
+            EditorGUI.DrawRect(rect, new Color32(167, 239, 241, 255));
+            
+            GUILayout.Label("Welcome to Scene Reference!", EditorStyles.boldLabel);
             GUILayout.Space(10);
-            GUILayout.Label("Scene Registry is a Unity package that replaces scene references by name or index with GUIDs, eliminating broken references when scenes are renamed or reorganized. The registry updates automatically whenever your Build Settings change, and is fully configured from the Project Settings.", EditorStyles.wordWrappedLabel);
+            GUILayout.Label("Scene Reference is a Unity package that replaces scene references by name or index with GUIDs, eliminating broken references when scenes are renamed or reorganized. The registry updates automatically whenever your Build Settings change, and is fully configured from the Project Settings.", EditorStyles.wordWrappedLabel);
             GUILayout.Space(20);
             
             if (GUILayout.Button("Create a SceneRegistryConfig"))
@@ -62,7 +65,7 @@ namespace BHO.SceneReference.Editor
             
             if (GUILayout.Button("Open Project Settings"))
             {
-                SettingsService.OpenProjectSettings("Project/Black Hole Odyssey/Scene Registry");
+                SettingsService.OpenProjectSettings("Project/Black Hole Odyssey/Scene Reference");
                 Close();
             }
 
