@@ -24,6 +24,9 @@ namespace BHO.SceneReference.Editor
 
         private string reportButtonLabel = "Send Report";
         private string reportMessage = "";
+        
+        private Color successColor = new(0.2f, 0.8f, 0.2f);
+        private Color errorColor = new(0.8f, 0.2f, 0.2f);
 
         [MenuItem("BHO/Scene Reference/Report a Bug")]
         public static void ShowWindow()
@@ -73,10 +76,10 @@ namespace BHO.SceneReference.Editor
             }
 
             GUILayout.Space(20);
-
+            
             GUIStyle messageStyle = new GUIStyle(EditorStyles.helpBox)
             {
-                normal = { textColor = reportMessage.Contains("successfully") ? Color.limeGreen : Color.softRed },
+                normal = { textColor = reportMessage.Contains("successfully") ? successColor : errorColor },
                 wordWrap = true,
                 fontSize = 12
             };
