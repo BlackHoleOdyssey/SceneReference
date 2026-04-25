@@ -30,10 +30,10 @@ namespace BHO.SceneReference.Editor
 
     public class SceneRegistryWizardWindow : EditorWindow
     {
-        [MenuItem("BHO/Scene Reference")]
+        [MenuItem("BHO/Scene Reference/Setup Wizard")]
         public static void Open()
         {
-            SceneRegistryWizardWindow window = GetWindow<SceneRegistryWizardWindow>("Scene Reference Setup");
+            SceneRegistryWizardWindow window = GetWindow<SceneRegistryWizardWindow>("Scene Reference Setup Wizard");
             window.minSize = new Vector2(500, 265);
             window.maxSize = new Vector2(500.01f, 265.01f);
             window.ShowUtility();
@@ -42,7 +42,8 @@ namespace BHO.SceneReference.Editor
         private void OnGUI()
         {
             Rect rect = GUILayoutUtility.GetRect(0, 50, GUILayout.ExpandWidth(true));
-            EditorGUI.DrawRect(rect, new Color32(167, 239, 241, 255));
+            
+            SceneReferenceHeader.DrawHeader("Scene Reference Setup", rect);
             
             GUILayout.Label("Welcome to Scene Reference!", EditorStyles.boldLabel);
             GUILayout.Space(10);
