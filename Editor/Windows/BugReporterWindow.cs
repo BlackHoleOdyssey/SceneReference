@@ -25,6 +25,7 @@ namespace BHO.SceneReference.Editor
         private string reportButtonLabel = "Send Report";
         private string reportMessage = "";
 
+        [MenuItem("BHO/Scene Reference/Report a Bug")]
         public static void ShowWindow()
         {
             BugReporterWindow window = GetWindow<BugReporterWindow>("Report a Bug");
@@ -34,6 +35,10 @@ namespace BHO.SceneReference.Editor
 
         public void OnGUI()
         {
+            Rect rect = GUILayoutUtility.GetRect(0, 50, GUILayout.ExpandWidth(true));
+            
+            SceneReferenceHeader.DrawHeader("Scene Reference Report", rect);
+            
             GUILayout.Label("Report a Bug", EditorStyles.boldLabel);
             GUILayout.Space(10);
             GUILayout.Label(

@@ -1,16 +1,19 @@
-This package contains third-party software components governed by the license(s) indicated below:
----------
+# Third Party Notices
 
-Component Name: [provide component name]
+This package includes the following third-party software:
 
-License Type: [Provide license type, i.e. "MIT", "Apache 2.0"]
+---
 
-[Provide License Details]
+## JetBrains Mono
 
----------
-Component Name: [provide component name]
+**Version:** 1.0.3  
+**Author:** JetBrains  
+**License:** SIL Open Font License 1.1  
+**Source:** https://www.jetbrains.com/lp/mono/
 
-License Type: [Provide license type, i.e. "MIT", "Apache 2.0"]
+JetBrains Mono is a free and open source typeface for developers.
 
-[Provide License Details]
+Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
 
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is available with a FAQ at: https://scripts.sil.org/OFL

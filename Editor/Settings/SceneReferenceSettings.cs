@@ -7,14 +7,14 @@ using UnityEngine;
 
 namespace BHO.SceneReference.Editor
 {
-    public static class SceneRegistrySettings
+    public static class SceneReferenceSettings
     {
         [SettingsProvider]
         public static SettingsProvider SceneRegistrySettingsProvider()
         {
             return new SettingsProvider("Project/Black Hole Odyssey/Scene Reference", SettingsScope.Project)
             {
-                label = "Scene Registry",
+                label = "Scene Reference",
                 guiHandler = _ =>
                 {
                     SceneRegistryConfig config = SceneRegistryConfig.Instance;
