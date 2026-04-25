@@ -13,3 +13,9 @@
 - Automatic addition of SceneRegistryConfig to Preloaded Assets on creation
 - First-time setup wizard displayed automatically on package import
 - Custom property drawer for SceneReference with an "Add to scenes" button to quickly add a scene to Build Settings
+
+## [1.0.1] - 2026-04-25
+
+### Fixed
+
+- Removed dependency on undefined Color constants (softRed, limeGreen) that caused compilation errors when installing the package in an external project
