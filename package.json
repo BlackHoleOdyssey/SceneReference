@@ -1,7 +1,7 @@
 {
   "name": "com.blackholeodyssey.scenereference",
   "displayName": "SceneReference",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "unity": "6000.0",
   "unityRelease": "66f2",
   "description": "Scene Registry is a Unity package that provides a safe and reliable way to reference scenes in your project. \nInstead of using fragile scene names or build indexes that break whenever a scene is renamed or reorganized, Scene Registry tracks your scenes by their unique GUID, ensuring your references always remain valid.\n\nThe registry automatically stays in sync with your Build Settings, updating itself whenever scenes are added, removed, or reordered. \nEverything is configured directly from the Project Settings, with no manual file management required.",
