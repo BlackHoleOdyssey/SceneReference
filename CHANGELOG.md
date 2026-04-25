@@ -2,7 +2,7 @@
 
 ## [1.0.0] - 2026-04-25
 
-### This is the first release of *\SceneReference\*.
+### This is the first release of *SceneReference*.
 
 - SceneReference field allowing scenes to be referenced by GUID instead of name or index, eliminating broken references when scenes are renamed or reorganized
 - SceneRegistry that automatically syncs with Build Settings whenever scenes are added, removed, or reordered
