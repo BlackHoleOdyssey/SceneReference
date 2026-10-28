@@ -2,7 +2,11 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 using System.Collections.Generic;
+using System.IO;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+using UnityEngine.SceneManagement;
 
 namespace BHO.SceneReference
 {
@@ -34,12 +38,14 @@ namespace BHO.SceneReference
 
         public static string GetName(string guid)
         {
-            return string.Empty;
+            string path = GetPath(guid);
+            return string.IsNullOrEmpty(path) ? string.Empty : Path.GetFileNameWithoutExtension(path);
         }
 
         public static string GetPath(string guid)
         {
-            return string.Empty;
+            int buildIndex = GetBuildIndex(guid);
+            return buildIndex < 0 ? string.Empty : SceneUtility.GetScenePathByBuildIndex(buildIndex);
         }
 
         public static int GetBuildIndex(string guid)

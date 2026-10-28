@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2] - 2026-10-28
+
+### Fixed
+
+- Fixed `SceneRegistry.GetName` and `SceneRegistry.GetPath` returning empty strings for scenes that are not currently loaded. Both methods now resolve the path through `SceneUtility.GetScenePathByBuildIndex`, which works at runtime for any scene in the Build Settings
+- Wrapped the `UnityEditor` using directive in `SceneRegistry` with `#if UNITY_EDITOR` to avoid build errors
+
 ## [1.0.0] - 2026-04-25
 
 ### This is the first release of *SceneReference*.
