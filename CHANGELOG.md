@@ -7,6 +7,12 @@
 - Fixed `SceneRegistry.GetName` and `SceneRegistry.GetPath` returning empty strings for scenes that are not currently loaded. Both methods now resolve the path through `SceneUtility.GetScenePathByBuildIndex`, which works at runtime for any scene in the Build Settings
 - Wrapped the `UnityEditor` using directive in `SceneRegistry` with `#if UNITY_EDITOR` to avoid build errors
 
+## [1.0.1] - 2026-04-25
+
+### Fixed
+
+- Removed dependency on undefined Color constants (softRed, limeGreen) that caused compilation errors when installing the package in an external project
+
 ## [1.0.0] - 2026-04-25
 
 ### This is the first release of *SceneReference*.
@@ -20,9 +26,3 @@
 - Automatic addition of SceneRegistryConfig to Preloaded Assets on creation
 - First-time setup wizard displayed automatically on package import
 - Custom property drawer for SceneReference with an "Add to scenes" button to quickly add a scene to Build Settings
-
-## [1.0.1] - 2026-04-25
-
-### Fixed
-
-- Removed dependency on undefined Color constants (softRed, limeGreen) that caused compilation errors when installing the package in an external project
