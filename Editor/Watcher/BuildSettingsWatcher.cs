@@ -11,7 +11,7 @@ namespace BHO.SceneReference.Editor
         static BuildSettingsWatcher()
         {
             EditorBuildSettings.sceneListChanged += OnSceneListChanged;
-            EditorApplication.quitting += () => SceneRegistrySaveSystem.Save(SceneRegistry.Scenes);
+            EditorApplication.quitting += () => SceneRegistrySaveSystem.Save(SceneRegistry.Registry);
         }
 
         private static void OnSceneListChanged()
@@ -29,7 +29,7 @@ namespace BHO.SceneReference.Editor
                 }
             }
             
-            SceneRegistrySaveSystem.Save(SceneRegistry.Scenes);
+            SceneRegistrySaveSystem.Save(SceneRegistry.Registry);
         }
     }
 }

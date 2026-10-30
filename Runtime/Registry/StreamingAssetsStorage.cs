@@ -64,7 +64,7 @@ namespace BHO.SceneReference
         }
 
 #if UNITY_EDITOR
-        public void Save(Dictionary<string, int> scenes)
+        public void Save(IReadOnlyDictionary<string, int> scenes)
         {
             if (!Directory.Exists(Application.streamingAssetsPath))
                 Directory.CreateDirectory(Application.streamingAssetsPath);

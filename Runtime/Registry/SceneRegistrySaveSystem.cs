@@ -28,7 +28,7 @@ namespace BHO.SceneReference
         public static void Load(out Dictionary<string, int> scenes) => Storage.Load(out scenes);
 
 #if UNITY_EDITOR
-        public static void Save(Dictionary<string, int> scenes) => Storage.Save(scenes);
+        public static void Save(IReadOnlyDictionary<string, int> scenes) => Storage.Save(scenes);
 #endif
         public static void ResetStorage()
         {
@@ -53,7 +53,7 @@ namespace BHO.SceneReference
             return dict;
         }
 
-        public static SceneRegistryData FromDictionary(Dictionary<string, int> dict)
+        public static SceneRegistryData FromDictionary(IReadOnlyDictionary<string, int> dict)
         {
             SceneRegistryData data = new();
             foreach (var kvp in dict)

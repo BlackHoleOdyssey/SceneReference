@@ -56,7 +56,7 @@ namespace BHO.SceneReference.Editor
                         }
 
                         SceneRegistrySaveSystem.ResetStorage();
-                        SceneRegistrySaveSystem.Save(SceneRegistry.Scenes);
+                        SceneRegistrySaveSystem.Save(SceneRegistry.Registry);
                         AssetDatabase.Refresh();
                     }
                     
@@ -82,7 +82,7 @@ namespace BHO.SceneReference.Editor
                             SceneRegistrySaveSystem.ResetStorage();
                             SceneRegistry.Reload();
                             
-                            SceneRegistrySaveSystem.Save(SceneRegistry.Scenes);
+                            SceneRegistrySaveSystem.Save(SceneRegistry.Registry);
                             AssetDatabase.Refresh();
                         }
 

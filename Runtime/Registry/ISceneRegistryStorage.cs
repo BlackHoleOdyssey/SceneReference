@@ -9,7 +9,7 @@ namespace BHO.SceneReference
     {
         void Load(out Dictionary<string, int> scenes);
 #if UNITY_EDITOR
-        void Save(Dictionary<string, int> scenes);
+        void Save(IReadOnlyDictionary<string, int> scenes);
 #endif
     }
 }

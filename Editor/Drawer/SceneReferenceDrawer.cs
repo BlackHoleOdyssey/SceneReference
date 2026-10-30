@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace BHO.SceneReference.Editor
 {
-    [CustomPropertyDrawer(typeof(SceneReference), true)]
+    [CustomPropertyDrawer(typeof(SceneRef), true)]
     public class SceneReferenceDrawer : PropertyDrawer
     {
         private const float LINE_HEIGHT = 20;
