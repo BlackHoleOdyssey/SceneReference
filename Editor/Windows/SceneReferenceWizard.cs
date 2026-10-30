@@ -30,7 +30,7 @@ namespace BHO.SceneReference.Editor
 
     public class SceneRegistryWizardWindow : EditorWindow
     {
-        [MenuItem("BHO/Scene Reference/Setup Wizard")]
+        [MenuItem("Tools/BHO/Scene Reference/Setup Wizard")]
         public static void Open()
         {
             SceneRegistryWizardWindow window = GetWindow<SceneRegistryWizardWindow>("Scene Reference Setup Wizard");

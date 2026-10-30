@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.1.0] - 2026-10-30
+
+### Added
+
+- Auto-generated `Scenes` enum, built from the scenes enabled in Build Settings. Each value matches the scene's build index, so `(int)Scenes.Level1` gives the build index directly, with no registry lookup
+- `SceneRegistry.GetScene(Scenes)` returns a `SceneLink` from the enum name, so a scene can be referenced from any script without an inspector field or a hard-coded name or index
+- `SceneRegistry.GetBuildIndex(Scenes)` overload returns the build index as an `int` without any allocation
+- Enum regeneration is triggered automatically when a `.unity` file is imported, deleted or moved, and when the scene list in Build Settings changes (added, removed, reordered, enabled or disabled)
+- `Tools → BHO → Regenerate Scenes Enum` menu item to force a regeneration manually
+- Scene names are sanitized into valid C# identifiers (invalid characters, leading digits and reserved keywords are handled), and duplicate names are suffixed with a warning in the console
+- The generated file is only rewritten when its content actually changes, which avoids unnecessary recompilations
+
+### Changed
+
+- **Breaking:** Renamed `SceneReference` to `SceneLink`, to avoid the ambiguity with the `BHO.SceneReference` namespace (`SceneReference.SceneReference`). Fields of this type serialized in existing scripts, prefabs and scenes must be reassigned after updating
+- `SceneRegistry` now keeps a cached reverse lookup (build index → GUID), which is invalidated whenever the registry changes
+- `SceneRegistry.Scenes` is now exposed as the read-only `SceneRegistry.Registry`, to avoid the name clash with the `Scenes` enum. Modifications go through `Add`, `Remove` and `Clear`
+- `SceneRegistry.Reload()` now saves the registry after rebuilding it
+- The generated enum is now written next to the runtime scripts, outside the `Editor` folder, so it can be used from runtime code
+
+### Fixed
+
+- Fixed a potential `NullReferenceException` in `SceneRegistry` when the registry was accessed before it had been initialized
+- Fixed the generated enum containing empty entries when some scenes were disabled in Build Settings
+- Wrapped the `UnityEditor` using directive in `SceneLink` with `#if UNITY_EDITOR` to avoid build errors
+
+### Improved
+
+- Added icons to the Editor scripts that did not have one, so they are easier to identify in the Project window
+
 ## [1.0.2] - 2026-10-28
 
 ### Fixed

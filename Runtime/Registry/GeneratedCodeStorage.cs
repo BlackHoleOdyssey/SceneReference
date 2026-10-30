@@ -11,7 +11,7 @@ namespace BHO.SceneReference
     public class GeneratedCodeStorage : ISceneRegistryStorage
     {
 #if UNITY_EDITOR
-        private static string OUTPUT_PATH
+        private static string OutputPath
         {
             get
             {
@@ -19,15 +19,15 @@ namespace BHO.SceneReference
                 if (guids.Length > 0)
                     return AssetDatabase.GUIDToAssetPath(guids[0]);
                 
-                string selfPath =AssetDatabase.FindAssets("GeneratedCodeStorage")[0];
+                string selfPath = AssetDatabase.FindAssets("GeneratedCodeStorage")[0];
                 string directory = Path.GetDirectoryName(AssetDatabase.GUIDToAssetPath(selfPath));
                 return Path.Combine(directory, "SceneRegistryGenerated.cs");
             }
         }
 
-        public void Save(Dictionary<string, int> scenes)
+        public void Save(IReadOnlyDictionary<string, int> scenes)
         {
-            string directory = Path.GetDirectoryName(OUTPUT_PATH);
+            string directory = Path.GetDirectoryName(OutputPath);
 
             if (!Directory.Exists(directory))
             {
@@ -53,7 +53,7 @@ namespace BHO.SceneReference
             stringBuilder.AppendLine("    }");
             stringBuilder.AppendLine("}");
 
-            File.WriteAllText(OUTPUT_PATH, stringBuilder.ToString());
+            File.WriteAllText(OutputPath, stringBuilder.ToString());
             AssetDatabase.Refresh();
         }
 #endif

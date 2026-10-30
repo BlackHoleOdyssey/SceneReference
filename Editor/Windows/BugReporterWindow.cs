@@ -28,7 +28,7 @@ namespace BHO.SceneReference.Editor
         private Color successColor = new(0.2f, 0.8f, 0.2f);
         private Color errorColor = new(0.8f, 0.2f, 0.2f);
 
-        [MenuItem("BHO/Scene Reference/Report a Bug")]
+        [MenuItem("Tools/BHO/Scene Reference/Report a Bug")]
         public static void ShowWindow()
         {
             BugReporterWindow window = GetWindow<BugReporterWindow>("Report a Bug");
